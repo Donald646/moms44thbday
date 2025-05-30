@@ -13,6 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://moms44thbirthday.com"),
   title: "Moms 44th Birthday",
   description: "Made with love by her children",
   openGraph: {

@@ -94,7 +94,7 @@ export default function Home() {
     }
   ], []);
 
-  const totalPages = 4;
+  const totalPages = 5;
 
   useEffect(() => {
     setIsLoaded(true);
@@ -310,6 +310,79 @@ export default function Home() {
     return Component;
   }, []);
 
+  const VideosPage = useMemo(() => {
+    const Component = () => (
+      <div className="min-h-screen flex flex-col items-center justify-center p-4 sm:p-8 bg-gradient-to-br from-purple-50 to-blue-100">
+        <motion.h2
+          className="text-3xl sm:text-4xl md:text-5xl font-black text-transparent bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text mb-6 sm:mb-8 text-center"
+          initial={{ y: -30, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.2 }}
+        >
+          A Walk Down Memory Lane 🎬
+        </motion.h2>
+
+        <div className="w-full max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
+          {[1, 2, 3].map((videoNum, index) => (
+            <motion.div
+              key={videoNum}
+              className="relative bg-white/90 backdrop-blur-sm p-3 sm:p-4 rounded-2xl shadow-xl border border-purple-200"
+              initial={{ y: 50, opacity: 0, scale: 0.9 }}
+              animate={{ y: 0, opacity: 1, scale: 1 }}
+              transition={{ 
+                type: "spring", 
+                stiffness: 200, 
+                delay: 0.3 + index * 0.1 
+              }}
+              whileHover={{ scale: 1.02 }}
+            >
+              <motion.div
+                className="absolute -inset-2 bg-gradient-to-r from-purple-400 to-blue-400 rounded-2xl blur-sm opacity-20"
+                animate={{ 
+                  scale: [1, 1.02, 1],
+                  opacity: [0.2, 0.3, 0.2]
+                }}
+                transition={{ duration: 3, repeat: Infinity, delay: index * 0.5 }}
+              />
+              <video
+                className="relative w-full h-48 sm:h-56 md:h-64 lg:h-72 xl:h-80 object-contain rounded-xl shadow-lg bg-black"
+                controls
+                autoPlay
+                loop
+                preload="metadata"
+                poster={`/photos/photo.jpeg`}
+              >
+                <source src={`/videos/vid${videoNum}.mp4`} type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+              <motion.div
+                className="absolute -top-2 -right-2 text-xl sm:text-2xl bg-white/90 rounded-full p-1"
+                animate={{ 
+                  rotate: [0, 5, -5, 0],
+                  scale: [1, 1.1, 1]
+                }}
+                transition={{ duration: 2, repeat: Infinity, delay: index * 0.3 }}
+              >
+                🎥
+              </motion.div>
+            </motion.div>
+          ))}
+        </div>
+
+        <motion.p
+          className="text-lg sm:text-xl text-gray-700 text-center max-w-2xl mt-6 sm:mt-8 px-4"
+          initial={{ y: 30, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.8 }}
+        >
+          Precious moments captured in time, showing all the joy and love you bring to our lives! 💕
+        </motion.p>
+      </div>
+    );
+    Component.displayName = 'VideosPage';
+    return Component;
+  }, []);
+
   const ReasonsPage = useMemo(() => {
     const Component = () => (
       <div className="min-h-screen flex flex-col items-center justify-center p-4 sm:p-8 bg-gradient-to-br from-rose-50 to-pink-100">
@@ -336,10 +409,10 @@ export default function Home() {
                 damping: 25 
               }}
             >
-              <div className="flex flex-col md:flex-row items-center gap-4 md:gap-6">
+              <div className="flex flex-col lg:flex-row items-center gap-4 sm:gap-6 lg:gap-8">
                 {/* Image */}
                 <motion.div
-                  className="w-full md:w-1/2 flex-shrink-0"
+                  className="w-full lg:w-1/2 flex-shrink-0"
                   initial={{ scale: 0.8, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   transition={{ delay: 0.2 }}
@@ -358,17 +431,17 @@ export default function Home() {
                       alt={`Memory for: ${reasons[currentReason].text}`}
                       width={300}
                       height={300}
-                      className="relative rounded-xl object-contain w-full h-48 sm:h-64 md:h-80 shadow-lg border-2 border-pink-100 bg-white"
+                      className="relative rounded-xl object-contain w-full h-48 sm:h-56 md:h-64 lg:h-72 xl:h-80 shadow-lg border-2 border-pink-100 bg-white"
                     />
                   </div>
                 </motion.div>
                 
                 {/* Text */}
-                <div className="w-full md:w-1/2 flex items-center justify-center">
-                  <p className="text-lg sm:text-xl md:text-2xl text-gray-700 text-center leading-relaxed font-medium">
-                    <span className="text-pink-500 text-2xl sm:text-3xl md:text-4xl">&ldquo;</span>
+                <div className="w-full lg:w-1/2 flex items-center justify-center px-2 sm:px-4">
+                  <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-700 text-center leading-relaxed font-medium">
+                    <span className="text-pink-500 text-xl sm:text-2xl md:text-3xl lg:text-4xl">&ldquo;</span>
                     {reasons[currentReason].text}
-                    <span className="text-rose-500 text-2xl sm:text-3xl md:text-4xl">&rdquo;</span>
+                    <span className="text-rose-500 text-xl sm:text-2xl md:text-3xl lg:text-4xl">&rdquo;</span>
                   </p>
                 </div>
               </div>
@@ -415,22 +488,30 @@ export default function Home() {
         </motion.h2>
 
         <motion.div
-          className="text-center mb-6 sm:mb-8 max-w-lg mx-auto"
+          className="text-center mb-6 sm:mb-8 max-w-4xl mx-auto px-4"
           initial={{ y: 30, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.3 }}
         >
-          <p className="text-lg sm:text-xl text-gray-700 leading-relaxed mb-4 px-4">
-            Today we celebrate not just another year of your life, but another year of all the joy, love, and happiness you bring to everyone around you.
+          <motion.h3
+            className="text-xl sm:text-2xl md:text-3xl font-bold text-purple-600 mb-4"
+            initial={{ scale: 0.9 }}
+            animate={{ scale: 1 }}
+            transition={{ delay: 0.5 }}
+          >
+            Happy Birthday Mommy! ❤️
+          </motion.h3>
+          <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-700 leading-relaxed mb-4 px-2">
+            May 30th marks another year where the world was changed for the better. Today we celebrate not just another day where a beautiful Mom was brought into this earth, but celebrate the lessons you have taught us, the love you brought into this world, and the sacrifices you have made to be where you are today.
           </p>
-          <p className="text-lg sm:text-xl text-gray-700 font-semibold px-4">
-            Thank you for being the most wonderful mom! We love you! 💕
+          <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-700 font-semibold px-2">
+            Thank you for being the best Mom in the whole world. We don&apos;t know what we would do without you. We love you very much ❤️
           </p>
         </motion.div>
 
         <motion.button
           onClick={triggerConfetti}
-          className="bg-gradient-to-r from-yellow-400 via-pink-500 to-purple-500 text-white px-8 sm:px-12 py-4 sm:py-6 rounded-full text-xl sm:text-2xl font-bold shadow-2xl mb-6 sm:mb-8 active:scale-95 transition-transform"
+          className="bg-gradient-to-r from-yellow-400 via-pink-500 to-purple-500 text-white px-6 sm:px-8 md:px-12 py-3 sm:py-4 md:py-6 rounded-full text-lg sm:text-xl md:text-2xl font-bold shadow-2xl mb-6 sm:mb-8 active:scale-95 transition-transform"
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.95 }}
           animate={{
@@ -442,11 +523,11 @@ export default function Home() {
           }}
           transition={{ duration: 2, repeat: Infinity }}
         >
-          🎊 Party Time! 🎊
+          🎊 Celebrate! 🎊
         </motion.button>
 
         <motion.div
-          className="flex flex-wrap justify-center gap-2 sm:gap-4 text-3xl sm:text-4xl"
+          className="flex flex-wrap justify-center gap-2 sm:gap-3 md:gap-4 text-2xl sm:text-3xl md:text-4xl px-4"
           initial={{ y: 50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.5 }}
@@ -500,7 +581,7 @@ export default function Home() {
     return Component;
   }, [triggerConfetti]);
 
-  const pages = useMemo(() => [WelcomePage, PhotoPage, ReasonsPage, CelebrationPage], [WelcomePage, PhotoPage, ReasonsPage, CelebrationPage]);
+  const pages = useMemo(() => [WelcomePage, PhotoPage, VideosPage, ReasonsPage, CelebrationPage], [WelcomePage, PhotoPage, VideosPage, ReasonsPage, CelebrationPage]);
   const CurrentPageComponent = pages[currentPage];
 
   return (
